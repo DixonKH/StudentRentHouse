@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/rent-housing-api/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/rent-housing-api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/rent-housing-api",
+  "projects": {
+    "student-rent-house": {
+      "type": "application",
+      "root": "apps/rent-housing-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/rent-housing-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/rent-housing-api/tsconfig.app.json"
+      }
+    },
+    "rent-housing-batch": {
+      "type": "application",
+      "root": "apps/rent-housing-batch",
+      "entryFile": "main",
+      "sourceRoot": "apps/rent-housing-batch/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/rent-housing-batch/tsconfig.app.json"
+      }
+    }
   }
 }
