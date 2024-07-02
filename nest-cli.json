@@ -10,7 +10,7 @@
 	"monorepo": true,
 	"root": "apps/rent-housing-api",
 	"projects": {
-		"student-rent-house": {
+		"rent-housing-api": {
 			"type": "application",
 			"root": "apps/rent-housing-api",
 			"entryFile": "main",
