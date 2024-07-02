@@ -6,6 +6,9 @@ import { Member } from '../../libs/dto/member/member';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { shapeIntoMongoObjectId } from '../../libs/config';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { MemberType } from '../../libs/enums/member.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Resolver()
 export class MemberResolver {
@@ -30,11 +33,20 @@ export class MemberResolver {
 		return this.memberService.updateMember();
 	}
 
+	// For Checking ...
 	@UseGuards(AuthGuard)
 	@Query(() => String)
 	public async checkauth(@AuthMember('memberNick') memberNick: string): Promise<string> {
 		console.log('Query checkauth');
 		return `Hi ${memberNick}`;
+	}
+
+	@Roles(MemberType.USER, MemberType.AGENT)
+	@UseGuards(RolesGuard)
+	@Query(() => String)
+	public async checkAuthRoles(@AuthMember() authMember: Member): Promise<string> {
+		console.log('Query: checkAuthRoles');
+		return `Hi ${authMember.memberNick} you are ${authMember.memberType} (memberId ${authMember._id})`;
 	}
 
 	@Query(() => String)
@@ -45,7 +57,8 @@ export class MemberResolver {
 
 	/** ADMIN  */
 
-	//Authorization; ADMIN
+	@Roles(MemberType.ADMIN)
+	@UseGuards(RolesGuard)
 	@Mutation(() => String)
 	public async getAllMembersByAdmin(): Promise<string> {
 		console.log('Muatation getAllMembersByAdmi');
