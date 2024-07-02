@@ -10,13 +10,8 @@ export class MemberResolver {
 
 	@Mutation(() => Member)
 	public async signup(@Args('input') input: MemberInput): Promise<Member> {
-		try {
-			console.log('Muatation Singup');
-			return this.memberService.signup(input);
-		} catch (err) {
-			console.log('Error signup', err);
-			throw new InternalServerErrorException(err);
-		}
+		console.log('Muatation Singup');
+		return this.memberService.signup(input);
 	}
 
 	@Mutation(() => Member)
