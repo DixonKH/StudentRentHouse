@@ -9,6 +9,8 @@ import { shapeIntoMongoObjectId } from '../../libs/config';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { MemberType } from '../../libs/enums/member.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { ObjectId } from 'mongoose';
+import { MemberUpdate } from '../../libs/dto/member/member.update';
 
 @Resolver()
 export class MemberResolver {
@@ -26,13 +28,6 @@ export class MemberResolver {
 		return this.memberService.login(input);
 	}
 
-	@UseGuards(AuthGuard)
-	@Mutation(() => String)
-	public async updateMember(@AuthMember('_id') memberId: string): Promise<string> {
-		console.log('Muatation updateMember');
-		return this.memberService.updateMember();
-	}
-
 	// For Checking ...
 	@UseGuards(AuthGuard)
 	@Query(() => String)
@@ -47,6 +42,17 @@ export class MemberResolver {
 	public async checkAuthRoles(@AuthMember() authMember: Member): Promise<string> {
 		console.log('Query: checkAuthRoles');
 		return `Hi ${authMember.memberNick} you are ${authMember.memberType} (memberId ${authMember._id})`;
+	}
+
+	@UseGuards(AuthGuard)
+	@Mutation(() => Member)
+	public async updateMember(
+		@Args('input') input: MemberUpdate,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Member> {
+		console.log('Muatation updateMember');
+		delete input._id;
+		return await this.memberService.updateMember(memberId, input);
 	}
 
 	@Query(() => String)
