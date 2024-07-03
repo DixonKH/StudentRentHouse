@@ -11,6 +11,7 @@ import { MemberType } from '../../libs/enums/member.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { ObjectId } from 'mongoose';
 import { MemberUpdate } from '../../libs/dto/member/member.update';
+import { WithoutGuard } from '../auth/guards/without.guard';
 
 @Resolver()
 export class MemberResolver {
@@ -55,10 +56,15 @@ export class MemberResolver {
 		return await this.memberService.updateMember(memberId, input);
 	}
 
-	@Query(() => String)
-	public async getMember(): Promise<string> {
+	@UseGuards(WithoutGuard)
+	@Query(() => Member)
+	public async getMember(
+		@Args('memberId') input: string,
+		@AuthMember('_id') memberId: ObjectId, //
+	): Promise<Member> {
 		console.log('Query: getMember');
-		return this.memberService.getMember();
+		const targetId = shapeIntoMongoObjectId(input);
+		return await this.memberService.getMember(memberId, targetId);
 	}
 
 	/** ADMIN  */
