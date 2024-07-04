@@ -11,7 +11,7 @@ registerEnumType(PropertyType, {
 	name: 'PropertyType',
 });
 
-export enum PropertyAmenity {
+export enum PropertyAmenities {
 	ELEVATOR = 'ELEVATOR',
 	INTERNET = 'INTERNET',
 	PARKING = 'PARKING',
@@ -24,8 +24,8 @@ export enum PropertyAmenity {
 	TV = 'TV',
 }
 
-registerEnumType(PropertyAmenity, {
-	name: 'PropertyAmenity',
+registerEnumType(PropertyAmenities, {
+	name: 'PropertyAmenities',
 });
 
 export enum StayDuration {
@@ -72,3 +72,7 @@ export enum PropertyUtilityBills {
 	ELECTRICITY = 'ELECTRICITY',
 	INTERNET = 'INTERNET',
 }
+
+registerEnumType(PropertyUtilityBills, {
+	name: 'PropertyUtilityBills',
+});

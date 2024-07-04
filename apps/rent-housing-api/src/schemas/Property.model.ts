@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 import {
-	PropertyAmenity,
+	PropertyAmenities,
 	PropertyLocation,
 	PropertyStatus,
 	PropertyType,
@@ -17,15 +17,15 @@ const PropertySchema = new Schema(
 		},
 
 		propertyAmenities: {
-			type: String,
-			enum: PropertyAmenity,
+			type: [String],
+			enum: PropertyAmenities,
 			required: true,
 		},
 
 		stayDuration: {
 			type: String,
 			enum: StayDuration,
-			required: true,
+			default: StayDuration.MONTHLY,
 		},
 
 		propertyStatus: {
@@ -61,7 +61,7 @@ const PropertySchema = new Schema(
 		},
 
 		propertyUtilityBills: {
-			type: String,
+			type: [String],
 			enum: PropertyUtilityBills,
 			required: true,
 		},
