@@ -19,7 +19,6 @@ const PropertySchema = new Schema(
 		propertyAmenities: {
 			type: [String],
 			enum: PropertyAmenities,
-			required: true,
 		},
 
 		stayDuration: {

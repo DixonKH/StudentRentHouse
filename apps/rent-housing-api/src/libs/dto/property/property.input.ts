@@ -20,10 +20,6 @@ export class PropertyInput {
 	propertyType: PropertyType;
 
 	@IsNotEmpty()
-	@Field(() => [PropertyAmenities])
-	propertyAmenities: PropertyAmenities[];
-
-	@IsNotEmpty()
 	@Field(() => PropertyLocation)
 	propertyLocation: PropertyLocation;
 
@@ -46,10 +42,6 @@ export class PropertyInput {
 	propertyDeposite: number;
 
 	@IsNotEmpty()
-	@Field(() => [PropertyUtilityBills])
-	propertyUtilityBills: PropertyUtilityBills[];
-
-	@IsNotEmpty()
 	@Field(() => Number)
 	propertySquare: number;
 
@@ -68,6 +60,14 @@ export class PropertyInput {
 	@IsNotEmpty()
 	@Field(() => [String])
 	propertyImages: string[];
+
+	@Optional()
+	@Field(() => [PropertyAmenities], { nullable: true })
+	propertyAmenities?: PropertyAmenities[];
+
+	@Optional()
+	@Field(() => [PropertyUtilityBills], { nullable: true })
+	propertyUtilityBills?: PropertyUtilityBills[];
 
 	@IsOptional()
 	@Field(() => String, { nullable: true })
@@ -132,12 +132,12 @@ class PISearch {
 	typeList?: PropertyType[];
 
 	@IsOptional()
-	@Field(() => [PropertyAmenities], { nullable: true })
-	amenityList?: PropertyAmenities[];
-
-	@IsOptional()
 	@Field(() => [StayDuration], { nullable: true })
 	durationList?: StayDuration[];
+
+	@IsOptional()
+	@Field(() => [PropertyUtilityBills], { nullable: true })
+	propertyUtilityBillsList?: PropertyUtilityBills[];
 
 	@IsOptional()
 	@Field(() => [Int], { nullable: true })

@@ -1,5 +1,5 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsInt, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
+import { IsIn, IsInt, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
 import { ObjectId } from 'mongoose';
 import {
 	PropertyAmenities,
@@ -9,6 +9,8 @@ import {
 	PropertyUtilityBills,
 	StayDuration,
 } from '../../enums/property.enum';
+import { availablePropertySorts } from '../../config';
+import { Direction } from '../../enums/common.enum';
 
 @InputType()
 export class PropertyUpdate {
