@@ -9,6 +9,7 @@ import {
 	StayDuration,
 } from '../../enums/property.enum';
 import { Member, TotalCounter } from '../member/member';
+import { MeLiked } from '../like/like';
 //import { MeLiked } from '../like/like';
 
 @ObjectType()
@@ -95,8 +96,8 @@ export class Property {
 	updatedAt?: Date;
 
 	/** from Aggregation */
-	// @Field(() => [MeLiked], { nullable: true })
-	// meLiked?: MeLiked[];
+	@Field(() => [MeLiked], { nullable: true })
+	meLiked?: MeLiked[];
 
 	@Field(() => Member, { nullable: true })
 	memberData?: Member;

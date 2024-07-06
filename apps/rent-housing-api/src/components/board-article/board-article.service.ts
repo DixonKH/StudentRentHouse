@@ -62,6 +62,8 @@ export class BoardArticleService {
 			}
 
 			// meLiked
+			const likeInput = { memberId: memberId, likeRefId: articleId, likeGroup: LikeGroup.MEMBER };
+			targetBoardArticle.meLiked = await this.likeService.checkLikeExistance(likeInput);
 		}
 		targetBoardArticle.memberData = await this.memberService.getMember(null, targetBoardArticle.memberId);
 		return targetBoardArticle;
