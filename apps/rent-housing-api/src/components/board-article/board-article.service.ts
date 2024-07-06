@@ -62,7 +62,7 @@ export class BoardArticleService {
 			}
 
 			// meLiked
-			const likeInput = { memberId: memberId, likeRefId: articleId, likeGroup: LikeGroup.MEMBER };
+			const likeInput = { memberId: memberId, likeRefId: articleId, likeGroup: LikeGroup.ARTICLE };
 			targetBoardArticle.meLiked = await this.likeService.checkLikeExistance(likeInput);
 		}
 		targetBoardArticle.memberData = await this.memberService.getMember(null, targetBoardArticle.memberId);
@@ -143,7 +143,7 @@ export class BoardArticleService {
 			targetKey: 'articleLikes',
 			modifier: modifier,
 		});
-		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
 		return result;
 	}
 

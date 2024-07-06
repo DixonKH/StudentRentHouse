@@ -65,7 +65,7 @@ export class PropertyService {
 			}
 
 			// meLiked
-			const likeInput = { memberId: memberId, likeRefId: propertyId, likeGroup: LikeGroup.MEMBER };
+			const likeInput = { memberId: memberId, likeRefId: propertyId, likeGroup: LikeGroup.PROPERTY };
 			targetProperty.meLiked = await this.likeService.checkLikeExistance(likeInput);
 		}
 
@@ -207,7 +207,7 @@ export class PropertyService {
 		// like Toggle via Like Module
 		const modifier: number = await this.likeService.toggleLike(input);
 		const result = await this.propertyStatsEditor({ _id: likeRefId, targetKey: 'propertyLikes', modifier: modifier });
-		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
 		return result;
 	}
 

@@ -127,7 +127,7 @@ export class MemberService {
 		// like Toggle via Like Module
 		const modifier: number = await this.likeService.toggleLike(input);
 		const result = await this.memeberStatsEditor({ _id: likeRefId, targetKey: 'memberLikes', modifier: modifier });
-		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+		if (!result) throw new InternalServerErrorException(Message.SOMETHING_WENT_WRONG);
 		return result;
 	}
 

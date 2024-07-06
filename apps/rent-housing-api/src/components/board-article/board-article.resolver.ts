@@ -66,7 +66,7 @@ export class BoardArticleResolver {
 	@UseGuards(AuthGuard)
 	@Mutation(() => BoardArticle)
 	public async likeTargetBoardArticle(
-		@Args('aricleId') input: string,
+		@Args('articleId') input: string,
 		@AuthMember('_id') memberId: ObjectId,
 	): Promise<BoardArticle> {
 		console.log('Mutation: likeTargetBoardArticle');
