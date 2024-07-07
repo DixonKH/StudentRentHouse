@@ -6,6 +6,7 @@ import { Server } from 'ws';
 export class SocketGateway implements OnGatewayInit {
 	private logger: Logger = new Logger('SocketEventsGateway');
 	private summaryCliet: number = 0;
+
 	public afterInit(server: Server) {
 		this.logger.log(`WebSocket Server initialized total: ${this.summaryCliet}`);
 	}
