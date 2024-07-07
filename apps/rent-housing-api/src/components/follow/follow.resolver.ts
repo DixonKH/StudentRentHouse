@@ -34,11 +34,11 @@ export class FollowResolver {
 
 	@UseGuards(WithoutGuard)
 	@Query(() => Followings)
-	public async getMemberFollowngs(
+	public async getMemberFollowings(
 		@Args('input') input: FollowInquiry,
 		@AuthMember('_id') memberId: ObjectId,
 	): Promise<Followings> {
-		console.log('Mutation: getMemberFollowngs');
+		console.log('Mutation: getMemberFollowings');
 		const { followerId } = input.search;
 		input.search.followerId = shapeIntoMongoObjectId(followerId);
 		return await this.followService.getMemberFollowings(memberId, input);
