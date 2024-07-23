@@ -74,7 +74,7 @@ export class PropertyResolver {
 	public async getFavorites(
 		@Args('input') input: OrdinaryInquiry,
 		@AuthMember('_id') memberId: ObjectId,
-	): Promise<Properties> {
+	): Promise<Properties> { 
 		console.log('Query: getFavorites');
 		return await this.propertyService.getFavorites(memberId, input);
 	}

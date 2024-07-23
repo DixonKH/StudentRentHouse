@@ -3,7 +3,7 @@ import { registerEnumType } from '@nestjs/graphql';
 export enum PropertyType {
 	APARTMENT = 'APARTMENT',
 	DORMITORY = 'DORMITORY',
-	SINGLR_ROOM = 'SINGLR_ROOM',
+	SINGLE_ROOM = 'SINGLE_ROOM',
 	STUDIO = 'STUDIO',
 	HOUSE = 'HOUSE',
 }
@@ -57,10 +57,6 @@ export enum PropertyLocation {
 	CHONJU = 'CHONJU',
 	DAEJON = 'DAEJON',
 	JEJU = 'JEJU',
-	ULSAN = 'ULSAN',
-	GWANGYONG = 'GWANGYONG',
-	GIMHAE = 'GIMHAE',
-	YONGIN = 'YONGIN',
 }
 registerEnumType(PropertyLocation, {
 	name: 'PropertyLocation',

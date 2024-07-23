@@ -103,7 +103,7 @@ export class PropertyService {
 	}
 
 	public async getProperties(memberId: ObjectId, input: PropertiesInquiry): Promise<Properties> {
-		const match: T = { propertyStatus: PropertyStatus.ACTIVE };
+		const match: T = { propertyStatus: { $in: [PropertyStatus.ACTIVE, PropertyStatus.SOLD] } };
 		const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
 
 		this.shapeMatchQuery(match, input);
@@ -167,7 +167,7 @@ export class PropertyService {
 		if (periodsRange) match.createdAt = { $gte: periodsRange.start, $lte: periodsRange.end };
 		if (squaresRange) match.propertySquare = { $gte: squaresRange.start, $lte: squaresRange.end };
 
-		if (text) match.propertyTitle = { $regex: new RegExp(text, '1') };
+		if (text) match.propertyTitle = { $regex: new RegExp(text, 'i') };
 	}
 
 	public async getAgentProperties(memberId: ObjectId, input: AgentPropertiesInquiry): Promise<Properties> {
