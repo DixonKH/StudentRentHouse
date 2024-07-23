@@ -32,7 +32,6 @@ export class PropertyResolver {
 	): Promise<Property> {
 		console.log('Mutation: createProperty');
 		input.memberId = memberId;
-
 		return await this.propertyService.createProperty(input);
 	}
 
@@ -74,7 +73,7 @@ export class PropertyResolver {
 	public async getFavorites(
 		@Args('input') input: OrdinaryInquiry,
 		@AuthMember('_id') memberId: ObjectId,
-	): Promise<Properties> { 
+	): Promise<Properties> {
 		console.log('Query: getFavorites');
 		return await this.propertyService.getFavorites(memberId, input);
 	}

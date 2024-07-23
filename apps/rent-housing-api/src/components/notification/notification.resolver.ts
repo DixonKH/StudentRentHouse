@@ -6,8 +6,20 @@ import { Notification } from '../../libs/dto/notification/notification';
 import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
 import { NotificationInput } from '../../libs/dto/notification/notification.input';
+import { shapeIntoMongoObjectId } from '../../libs/config';
 
 @Resolver()
 export class NotificationResolver {
 	constructor(private readonly notificationService: NotificationService) {}
+
+	@UseGuards(AuthGuard)
+	@Query((returns) => Notification)
+	public async getNotification(
+		@Args('notificationId') input: string,
+		@AuthMember('_id') memberId: ObjectId,
+	): Promise<Notification> {
+		console.log('Query: getNotification');
+		const notificationId = shapeIntoMongoObjectId(input);
+		return await this.notificationService.getNotification(memberId, notificationId);
+	}
 }
