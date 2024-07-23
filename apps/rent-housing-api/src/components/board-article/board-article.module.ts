@@ -7,6 +7,7 @@ import { ViewModule } from '../view/view.module';
 import { BoardArticleResolver } from './board-article.resolver';
 import { BoardArticleService } from './board-article.service';
 import { LikeModule } from '../like/like.module';
+import { NotificationModule } from '../notification/notification.module';
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { LikeModule } from '../like/like.module';
 		MemberModule,
 		ViewModule,
 		LikeModule,
+		NotificationModule,
 	],
 	providers: [BoardArticleResolver, BoardArticleService],
 	exports: [BoardArticleService],
