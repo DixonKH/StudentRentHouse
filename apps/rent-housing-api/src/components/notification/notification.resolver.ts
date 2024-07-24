@@ -7,6 +7,7 @@ import { AuthMember } from '../auth/decorators/authMember.decorator';
 import { ObjectId } from 'mongoose';
 import { NotificationInput } from '../../libs/dto/notification/notification.input';
 import { shapeIntoMongoObjectId } from '../../libs/config';
+import { NotificationUpdate } from '../../libs/dto/notification/notification.update';
 
 @Resolver()
 export class NotificationResolver {
@@ -21,5 +22,22 @@ export class NotificationResolver {
 		console.log('Query: getNotification');
 		const notificationId = shapeIntoMongoObjectId(input);
 		return await this.notificationService.getNotification(memberId, notificationId);
+	}
+
+	@UseGuards(AuthGuard)
+	@Query((returns) => [Notification], { name: 'getNotifications' })
+	async getNotifications(@Args('memberId', { type: () => String }) memberId: ObjectId): Promise<Notification[]> {
+		return this.notificationService.getNotifications(memberId);
+	}
+
+	@UseGuards(AuthGuard)
+	@Mutation(() => Notification)
+	public async updateNotification(
+		@Args('input') input: NotificationUpdate,
+		@AuthMember('_id') authorId: ObjectId,
+	): Promise<Notification> {
+		console.log('Mutation: updateNotification');
+		input._id = shapeIntoMongoObjectId(input._id);
+		return await this.notificationService.updateNotification(authorId, input);
 	}
 }

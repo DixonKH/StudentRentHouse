@@ -31,6 +31,9 @@ export class NotificationInput {
 	receiverId: ObjectId;
 
 	@Field(() => String, { nullable: true })
+	messageId?: ObjectId;
+
+	@Field(() => String, { nullable: true })
 	propertyId?: ObjectId;
 
 	@Field(() => String, { nullable: true })

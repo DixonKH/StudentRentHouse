@@ -29,8 +29,12 @@ export class Notification {
 	receiverId: ObjectId;
 
 	@Field(() => String, { nullable: true })
+	messageId?: ObjectId;
+
+	@Field(() => String, { nullable: true })
 	propertyId?: ObjectId;
 
 	@Field(() => String, { nullable: true })
 	articleId?: ObjectId;
+
 }

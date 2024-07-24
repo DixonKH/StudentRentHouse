@@ -1,10 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Notification } from '../../libs/dto/notification/notification';
 import { Model, ObjectId } from 'mongoose';
 import { NotificationInput } from '../../libs/dto/notification/notification.input';
 import { T } from '../../libs/types/common';
 import { NotificationStatus } from '../../libs/enums/notification.enum';
+import { NotificationUpdate } from '../../libs/dto/notification/notification.update';
+import { Message } from '../../libs/enums/common.enum';
 
 @Injectable()
 export class NotificationService {
@@ -30,5 +32,20 @@ export class NotificationService {
 			throw new NotFoundException('Notification not found');
 		}
 		return notification;
+	}
+
+	async getNotifications(memberId: ObjectId): Promise<Notification[]> {
+		try {
+			return await this.notificationModel.find({ receiverId: memberId }).exec();
+		} catch (error) {
+			throw new InternalServerErrorException('Failed to get notifications');
+		}
+	}
+
+	public async updateNotification(authorId: ObjectId, input: NotificationUpdate): Promise<Notification> {
+		const { _id } = input;
+		const result = await this.notificationModel.findOneAndUpdate({ _id: _id }, input, { new: true }).exec();
+		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
+		return result;
 	}
 }
