@@ -13,6 +13,7 @@ export const availablePropertySorts = [
 	'propertyRank',
 	'propertyPrice',
 ];
+export const availableFaqSorts = ['createdAt', 'updatedAt', 'faqCategory'];
 
 export const availableBoardArticleSorts = ['createdAt', 'updatedAt', 'articleLikes', 'articleViews'];
 export const availableCommentSorts = ['createdAt', 'updatedAt'];
