@@ -15,6 +15,7 @@ import { NotificationService } from '../notification/notification.service';
 import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
 import { Property } from '../../libs/dto/property/property';
 import { BoardArticle } from '../../libs/dto/board-article/board-article';
+import { Member } from '../../libs/dto/member/member';
 
 @Injectable()
 export class CommentService {
@@ -22,6 +23,7 @@ export class CommentService {
 		@InjectModel('Comment') private readonly commentModel: Model<Comment>,
 		@InjectModel('Property') private readonly propertyModel: Model<Property>,
 		@InjectModel('BoardArticle') private readonly boardArticleModel: Model<BoardArticle>,
+		@InjectModel('Member') private readonly memberModel: Model<Member>,
 		private readonly memberService: MemberService,
 		private readonly propertyService: PropertyService,
 		private readonly boardArticleService: BoardArticleService,
@@ -30,6 +32,7 @@ export class CommentService {
 
 	public async createComment(memberId: ObjectId, input: CommentInput): Promise<Comment> {
 		input.memberId = memberId;
+		const member = await this.memberModel.findById(memberId).exec();
 
 		let result = null;
 		try {
@@ -52,8 +55,8 @@ export class CommentService {
 				await this.notificationService.createNotification(memberId, {
 					notificationType: NotificationType.COMMENT,
 					notificationGroup: NotificationGroup.PROPERTY,
-					notificationTitle: 'New Comment for your Properties!',
-					notificationDesc: `You have a new comment from ${memberId} `,
+					notificationTitle: 'New Comment for your Property!',
+					notificationDesc: `${member.memberNick} commented your property!`,
 					authorId: memberId,
 					receiverId: property.memberId,
 					propertyId: input.commentRefId,
@@ -72,8 +75,8 @@ export class CommentService {
 				await this.notificationService.createNotification(memberId, {
 					notificationType: NotificationType.COMMENT,
 					notificationGroup: NotificationGroup.ARTICLE,
-					notificationTitle: 'New Comment for your Articles!',
-					notificationDesc: `You have a new comment from ${memberId} `,
+					notificationTitle: 'New Comment for your Article!',
+					notificationDesc: `${member.memberNick} commented your article! `,
 					authorId: memberId,
 					receiverId: article.memberId,
 					propertyId: undefined,
@@ -91,7 +94,7 @@ export class CommentService {
 					notificationType: NotificationType.COMMENT,
 					notificationGroup: NotificationGroup.MEMBER,
 					notificationTitle: 'New Comment for you',
-					notificationDesc: `You have a new comment from ${memberId} `,
+					notificationDesc: `${member.memberNick} commented you! `,
 					authorId: memberId,
 					receiverId: input.commentRefId,
 					propertyId: undefined,
@@ -99,18 +102,6 @@ export class CommentService {
 				});
 				break;
 		}
-
-		// create a notification
-		// await this.notificationService.createNotification(memberId, {
-		// 	notificationType: NotificationType.COMMENT,
-		// 	notificationGroup: NotificationGroup.MEMBER,
-		// 	notificationTitle: 'New Comment',
-		// 	notificationDesc: `You have a new comment from ${memberId} `,
-		// 	authorId: memberId,
-		// 	receiverId: input.commentRefId,
-		// 	propertyId: input.commentGroup === CommentGroup.PROPERTY ? input.commentRefId : undefined,
-		// 	articleId: input.commentGroup === CommentGroup.ARTICLE ? input.commentRefId : undefined,
-		// });
 
 		if (!result) throw new InternalServerErrorException(Message.CREATE_FAILED);
 		return result;

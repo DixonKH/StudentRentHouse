@@ -7,13 +7,18 @@ import { T } from '../../libs/types/common';
 import { NotificationStatus } from '../../libs/enums/notification.enum';
 import { NotificationUpdate } from '../../libs/dto/notification/notification.update';
 import { Message } from '../../libs/enums/common.enum';
+import { Member } from '../../libs/dto/member/member';
 
 @Injectable()
 export class NotificationService {
-	constructor(@InjectModel('Notification') private readonly notificationModel: Model<Notification>) {}
+	constructor(
+		@InjectModel('Notification') private readonly notificationModel: Model<Notification>,
+		@InjectModel('Member') private readonly memberModel: Model<Member>,
+	) {}
 
 	public async createNotification(memberId: ObjectId, input: NotificationInput): Promise<Notification> {
 		try {
+			const member = await this.memberModel.findById(memberId).exec();
 			const result = await this.notificationModel.create(input);
 			return result;
 		} catch (err) {
@@ -34,9 +39,9 @@ export class NotificationService {
 		return notification;
 	}
 
-	async getNotifications(memberId: ObjectId): Promise<Notification[]> {
+	async getNotifications(receiverId: ObjectId): Promise<Notification[]> {
 		try {
-			return await this.notificationModel.find({ receiverId: memberId }).exec();
+			return await this.notificationModel.find({ receiverId: receiverId }).exec();
 		} catch (error) {
 			throw new InternalServerErrorException('Failed to get notifications');
 		}

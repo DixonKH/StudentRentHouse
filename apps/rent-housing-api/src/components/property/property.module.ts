@@ -8,10 +8,12 @@ import { AuthModule } from '../auth/auth.module';
 import { ViewModule } from '../view/view.module';
 import { LikeModule } from '../like/like.module';
 import { NotificationModule } from '../notification/notification.module';
+import MemberSchema from '../../schemas/Member.model';
 
 @Module({
 	imports: [
 		MongooseModule.forFeature([{ name: 'Property', schema: PropertySchema }]),
+		MongooseModule.forFeature([{ name: 'Member', schema: MemberSchema }]),
 		MemberModule,
 		AuthModule,
 		ViewModule,

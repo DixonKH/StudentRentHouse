@@ -20,11 +20,13 @@ import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
+import { Member } from '../../libs/dto/member/member';
 
 @Injectable()
 export class BoardArticleService {
 	constructor(
 		@InjectModel('BoardArticle') private readonly boardArticleModel: Model<BoardArticle>,
+		@InjectModel('Member') private readonly memberModel: Model<Member>,
 		private readonly memberService: MemberService,
 		private readonly viewService: ViewService,
 		private readonly likeService: LikeService,
@@ -128,6 +130,7 @@ export class BoardArticleService {
 	}
 
 	public async likeTargetBoardArticle(memberId: ObjectId, likeRefId: ObjectId): Promise<BoardArticle> {
+		const member = await this.memberModel.findById(memberId).exec();
 		const target: BoardArticle = await this.boardArticleModel
 			.findOne({ _id: likeRefId, articleStatus: BoardArticleStatus.ACTIVE })
 			.exec();
@@ -154,9 +157,10 @@ export class BoardArticleService {
 				notificationType: NotificationType.LIKE,
 				notificationGroup: NotificationGroup.ARTICLE,
 				notificationTitle: 'New Like on your article!',
-				notificationDesc: `You have a new like from member ${memberId}`,
+				notificationDesc: `${member.memberNick} liked your Article!`,
 				authorId: memberId,
 				receiverId: target.memberId,
+				propertyId: likeRefId,
 			});
 		}
 		return result;

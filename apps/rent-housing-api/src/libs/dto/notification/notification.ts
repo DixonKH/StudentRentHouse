@@ -26,7 +26,7 @@ export class Notification {
 	authorId: ObjectId;
 
 	@Field(() => String)
-	receiverId: ObjectId;
+	receiverId: String;
 
 	@Field(() => String, { nullable: true })
 	messageId?: ObjectId;
@@ -36,5 +36,4 @@ export class Notification {
 
 	@Field(() => String, { nullable: true })
 	articleId?: ObjectId;
-
 }

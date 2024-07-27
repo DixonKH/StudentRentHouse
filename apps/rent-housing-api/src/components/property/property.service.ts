@@ -24,11 +24,13 @@ import { LikeInput } from '../../libs/dto/like/like.input';
 import { LikeGroup } from '../../libs/enums/like.enum';
 import { NotificationService } from '../notification/notification.service';
 import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
+import { Member } from '../../libs/dto/member/member';
 
 @Injectable()
 export class PropertyService {
 	constructor(
 		@InjectModel('Property') private readonly propertyModel: Model<Property>,
+		@InjectModel('Member') private readonly memberModel: Model<Member>,
 		private memberService: MemberService,
 		private authService: AuthService,
 		private viewService: ViewService,
@@ -206,6 +208,7 @@ export class PropertyService {
 	}
 
 	public async likeTargetProperty(memberId: ObjectId, likeRefId: ObjectId): Promise<Property> {
+		const member = await this.memberModel.findById(memberId).exec();
 		const target: Property = await this.propertyModel
 			.findOne({ _id: likeRefId, propertyStatus: PropertyStatus.ACTIVE })
 			.exec();
@@ -228,9 +231,10 @@ export class PropertyService {
 				notificationType: NotificationType.LIKE,
 				notificationGroup: NotificationGroup.PROPERTY,
 				notificationTitle: 'New Like on your property',
-				notificationDesc: `You have a new like from member ${memberId}`,
+				notificationDesc: `${member.memberNick} liked your property!`,
 				authorId: memberId,
 				receiverId: target.memberId,
+				propertyId: likeRefId,
 			});
 		}
 		return result;
