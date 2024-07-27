@@ -1,45 +1,83 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
+import { IsIn, IsNotEmpty, IsOptional, Length, Min } from 'class-validator';
 import { ObjectId } from 'mongoose';
-import { Member, TotalCounter } from '../member/member';
+import { Direction } from '../../enums/common.enum';
+import { availableFaqSorts } from '../../config';
 import { NoticeCategory, NoticeStatus } from '../../enums/notice.enum';
-
-@ObjectType()
-export class Notice {
-	@Field(() => String)
-	_id: ObjectId;
-
+@InputType()
+export class NoticeInput {
+	@IsNotEmpty()
 	@Field(() => NoticeCategory)
 	noticeCategory: NoticeCategory;
 
-	@Field(() => NoticeStatus)
-	noticeStatus: NoticeStatus;
-
+	@IsNotEmpty()
+	@Length(3, 100)
 	@Field(() => String)
 	noticeTitle: string;
 
+	@IsNotEmpty()
+	@Length(3, 250)
 	@Field(() => String)
 	noticeContent: string;
 
-	@Field(() => String)
-	memberId: ObjectId;
-
-	@Field(() => Date)
-	createdAt: Date;
-
-	@Field(() => Date)
-	updatedAt: Date;
-
-	/** from aggregation **/
-
-	@Field(() => Member, { nullable: true })
-	memberData?: Member;
+	memberId?: ObjectId;
 }
 
-@ObjectType()
-export class Notices {
-	@Field(() => [Notice])
-	list: Notice[];
+@InputType()
+export class NoticeInquiry {
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	page: number;
 
-	@Field(() => [TotalCounter], { nullable: true })
-	metaCounter?: TotalCounter[];
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	limit: number;
+
+	@IsOptional()
+	@IsIn(availableFaqSorts)
+	@Field(() => String, { nullable: true })
+	sort?: string;
+
+	@IsOptional()
+	@Field(() => Direction, { nullable: true })
+	direction?: Direction;
+}
+
+@InputType()
+class ANISearch {
+	@IsOptional()
+	@Field(() => NoticeStatus, { nullable: true })
+	noticeStatus?: NoticeStatus;
+
+	@IsOptional()
+	@Field(() => String, { nullable: true })
+	text?: string;
+}
+
+@InputType()
+export class AllNoticesInquiry {
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	page: number;
+
+	@IsNotEmpty()
+	@Min(1)
+	@Field(() => Int)
+	limit: number;
+
+	@IsOptional()
+	@IsIn(availableFaqSorts)
+	@Field(() => String, { nullable: true })
+	sort?: string;
+
+	@IsOptional()
+	@Field(() => Direction, { nullable: true })
+	direction?: Direction;
+
+	@IsNotEmpty()
+	@Field(() => ANISearch)
+	search: ANISearch;
 }
