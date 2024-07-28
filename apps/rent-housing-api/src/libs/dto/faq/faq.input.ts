@@ -44,6 +44,10 @@ export class FaqInquiry {
 	@IsOptional()
 	@Field(() => Direction, { nullable: true })
 	direction?: Direction;
+
+	@IsOptional()
+	@Field(() => FaqCategory, { nullable: true })
+	faqCategory?: FaqCategory;
 }
 
 @InputType()
