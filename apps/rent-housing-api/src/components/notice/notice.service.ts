@@ -57,7 +57,7 @@ export class NoticeService {
 
 	public async getAllNoticesByAdmin(input: AllNoticesInquiry): Promise<Notices> {
 		const { noticeStatus, text } = input.search;
-		const match: T = {};
+		const match: T = { ...(input.search?.noticeCategory && { noticeCategory: input.search?.noticeCategory }) };
 		const sort: T = { [input?.sort ?? 'createdAt']: input?.direction ?? Direction.DESC };
 		if (text) match.noticeTitle = { $regex: new RegExp(text, 'i') };
 		if (noticeStatus) match.noticeStatus = noticeStatus;
@@ -94,7 +94,7 @@ export class NoticeService {
 		return result;
 	}
 	public async removeNoticeByAdmin(noticeId: ObjectId): Promise<Notice> {
-		const search: T = { _id: noticeId, noticeStatus: NoticeStatus.DELETE };
+		const search: T = { _id: noticeId };
 		const result = await this.noticeModel.findOneAndDelete(search).exec();
 		if (!result) throw new InternalServerErrorException(Message.REMOVE_FAILED);
 		return result;

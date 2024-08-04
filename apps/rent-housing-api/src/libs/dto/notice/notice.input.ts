@@ -21,6 +21,7 @@ export class NoticeInput {
 	noticeContent: string;
 
 	memberId?: ObjectId;
+	_id?: String;
 }
 
 @InputType()
@@ -50,6 +51,10 @@ class ANISearch {
 	@IsOptional()
 	@Field(() => NoticeStatus, { nullable: true })
 	noticeStatus?: NoticeStatus;
+
+	@IsOptional()
+	@Field(() => NoticeCategory, { nullable: true })
+	noticeCategory?: NoticeCategory;
 
 	@IsOptional()
 	@Field(() => String, { nullable: true })

@@ -26,4 +26,16 @@ export class NoticeUpdate {
 	@Length(3, 250)
 	@Field(() => String, { nullable: true })
 	noticeContent?: string;
+
+	@IsOptional()
+	@Field(() => String, { nullable: true })
+	memberId?: ObjectId;
+
+	@IsOptional()
+	@Field(() => Date, { nullable: true })
+	createdAt?: Date;
+
+	@IsOptional()
+	@Field(() => Date, { nullable: true })
+	updatedAt?: Date;
 }
