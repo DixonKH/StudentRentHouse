@@ -12,7 +12,7 @@ services:
     networks:
       - monorepo-network
     # for production
-    command: bash -c "npm install && npm run build && npm run start:prod"
+    command: bash -c "rm -rf dist && npm install && npm run build && npm run start:prod"
 
   rent-housing-batch:
     container_name: rent-housing-batch
