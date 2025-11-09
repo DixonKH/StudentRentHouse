@@ -61,7 +61,7 @@ export class MemberService {
 
 	public async updateMember(memberId: ObjectId, input: MemberUpdate): Promise<Member> {
 		const result: Member = await this.memberModel
-			.findByIdAndUpdate({ _id: memberId, MemberStatus: MemberStatus.ACTIVE }, input, { new: true })
+			.findByIdAndUpdate({ _id: memberId, memberStatus: MemberStatus.ACTIVE }, input, { new: true })
 			.exec();
 		if (!result) throw new InternalServerErrorException(Message.UPDATE_FAILED);
 		result.accessToken = await this.authService.createToken(result);
@@ -124,7 +124,7 @@ export class MemberService {
 			.exec();
 		if (!result.length) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
-		return result[0];
+		return result[0] ?? { list: [], metaCounter: [] };
 	}
 
 	public async likeTargetMember(memberId: ObjectId, likeRefId: ObjectId): Promise<Member> {

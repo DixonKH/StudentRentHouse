@@ -6,12 +6,12 @@ import { Connection } from 'mongoose';
 	imports: [
 		MongooseModule.forRootAsync({
 			useFactory: async () => ({
-				uri: process.env.NODE_ENV === 'production' ? process.env.MONGO_PROD : process.env.MONGO_DEV,
+				uri: process.env.NODE_ENV === 'production' ? process.env.MONGO_PROD_URI : process.env.MONGO_DEV_URI,
 			}),
 		}),
 	],
 	exports: [MongooseModule],
-})
+}) 
 export class DatabaseModule {
 	constructor(@InjectConnection() private readonly connection: Connection) {
 		if (connection.readyState === 1) {
