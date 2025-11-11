@@ -129,6 +129,9 @@ export class MemberService {
 
 	public async likeTargetMember(memberId: ObjectId, likeRefId: ObjectId): Promise<Member> {
 		const member = await this.memberModel.findById(memberId).exec();
+		if (!member) {
+			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		}
 		const target: Member = await this.memberModel.findOne({ _id: likeRefId, memberStatus: MemberStatus.ACTIVE }).exec();
 		if (!target) throw new InternalServerErrorException(Message.NO_DATA_FOUND);
 
@@ -195,6 +198,12 @@ export class MemberService {
 
 	public async memeberStatsEditor(input: StatisticModifier): Promise<Member> {
 		const { _id, targetKey, modifier } = input;
-		return await this.memberModel.findByIdAndUpdate(_id, { $inc: { [targetKey]: modifier } }, { new: true }).exec();
+		const result: Member = await this.memberModel
+			.findByIdAndUpdate(_id, { $inc: { [targetKey]: modifier } }, { new: true })
+			.exec();
+		if (!result) {
+			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		}
+		return result;
 	}
 }

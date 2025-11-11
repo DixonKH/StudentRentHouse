@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { Member } from '../../libs/dto/member/member';
 import { T } from '../../libs/types/common';
@@ -18,6 +18,9 @@ export class AuthService {
 	}
 
 	public async createToken(member: Member): Promise<string> {
+		if (!member) {
+			throw new InternalServerErrorException('Member data is required to create token');
+		}
 		const payload: T = {};
 		Object.keys(member['_doc'] ? member['_doc'] : member).map((ele) => {
 			payload[`${ele}`] = member[`${ele}`];

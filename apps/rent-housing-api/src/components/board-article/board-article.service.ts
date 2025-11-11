@@ -227,8 +227,12 @@ export class BoardArticleService {
 
 	public async boardArticleStatsEditor(input: StatisticModifier): Promise<BoardArticle> {
 		const { _id, targetKey, modifier } = input;
-		return await this.boardArticleModel
+		const result: BoardArticle = await this.boardArticleModel
 			.findByIdAndUpdate(_id, { $inc: { [targetKey]: modifier } }, { new: true })
 			.exec();
+		if (!result) {
+			throw new InternalServerErrorException(Message.NO_DATA_FOUND);
+		}
+		return result;
 	}
 }
